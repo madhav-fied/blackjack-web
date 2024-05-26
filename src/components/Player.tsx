@@ -1,5 +1,6 @@
 import { useReducer } from 'react';
 import Hand from './Hand';
+import { isSplittable } from '../utils/gameUtils';
 
 interface handProps {
   dealHand: () => Array<string>;
@@ -30,11 +31,8 @@ const handReducer = (hands: Array<Array<string>>, action: handAction) => {
     }
     case 'split': {
       const handToSplit = hands[action.handId];
-      // check if it is splittable
-      if (
-        handToSplit.length !== 2
-        || handToSplit[0].charAt(0) !== handToSplit[1].charAt(0)
-      ) return hands;
+      // check if it is splittable else do nothing
+      if (!isSplittable(handToSplit)) return hands;
 
       if (!newCards) throw new Error('Yo bro please draw cards');
 

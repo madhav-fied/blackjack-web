@@ -28,7 +28,7 @@ export const computeValue = (cards: Array<string>): Array<number> => {
 
   const hand = cards.reduce(
     (accumulator, card: string) => {
-      const faceValue = card === 'stop' ? '0' : card.charAt(0);
+      const faceValue = card === 'stop' ? '0' : card.split(' ')[0];
 
       if (houseCards.includes(faceValue)) accumulator.value += 10;
       else if (faceValue === 'A') accumulator.aces += 1;
@@ -50,4 +50,9 @@ export const computeValue = (cards: Array<string>): Array<number> => {
   }
 
   return [hand.value];
+};
+
+export const isSplittable = (hand: Array<string>): boolean => {
+  if (hand.length === 2 && hand[0].split(' ')[0] === hand[1].split(' ')[0]) return true;
+  return false;
 };
