@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import Hand from '../components/Hand';
 import { prepareDeck } from '../utils/gameUtils';
+import Player from '../components/Player';
 
 function Game() {
   const deck = useRef(prepareDeck());
@@ -25,7 +25,7 @@ function Game() {
   return (
     <>
       <h1>Money</h1>
-      <Hand dealHand={() => dealCards()} drawCard={drawCard} />
+      <Player dealHand={() => dealCards()} drawCard={drawCard} />
     </>
   );
 }

@@ -1,13 +1,12 @@
 import { CARDS } from '../constants/cards';
 
-export const dealRandomCard = () =>
-  CARDS[Math.floor(Math.random() * CARDS.length)];
+export const dealRandomCard = () => CARDS[Math.floor(Math.random() * CARDS.length)];
 
 export const shuffleDeck = (
   unshuffledFinalDeck: Array<string>,
 ): Array<string> => {
   const shuffledFinalDeck = unshuffledFinalDeck
-    .map(card => ({ card, sort: Math.random() }))
+    .map((card) => ({ card, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ card }) => card);
 
@@ -46,7 +45,7 @@ export const computeValue = (cards: Array<string>): Array<number> => {
   if (hand.aces !== 0) {
     // what the hell I am writing :(
     return [hand.aces > 1 ? 11 + hand.aces - 1 : 11, hand.aces].map(
-      withAce => hand.value + withAce,
+      (withAce) => hand.value + withAce,
     );
   }
 
