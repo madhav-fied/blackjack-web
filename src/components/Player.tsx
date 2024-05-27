@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import Hand from './Hand';
-import { isSplittable } from '../utils/gameUtils';
+import { isSplittable, stayActionDone } from '../utils/gameUtils';
 
 interface handProps {
   dealHand: () => Array<string>;
@@ -14,7 +14,7 @@ interface handAction {
 }
 
 const handReducer = (hands: Array<Array<string>>, action: handAction) => {
-  // TODO: stop condition;
+  if (stayActionDone(hands[action.handId]) && action.type !== 'reset') return hands;
 
   const newCards = action.payload;
 

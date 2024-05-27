@@ -56,3 +56,8 @@ export const isSplittable = (hand: Array<string>): boolean => {
   if (hand.length === 2 && hand[0].split(' ')[0] === hand[1].split(' ')[0]) return true;
   return false;
 };
+
+export const stayActionDone = (hand: Array<string>): boolean => {
+  if (hand[hand.length - 1] === 'stop') return true;
+  return false;
+};
