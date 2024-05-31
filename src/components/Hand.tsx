@@ -5,13 +5,15 @@ import { computeValue } from '../utils/gameUtils';
 
 interface handProps {
   cards: Array<string>;
-  handleHit: () => void;
-  handleStay: () => void;
-  handleDouble: () => void;
-  handleSplit: () => void;
+  isDealer?: boolean;
+  handleHit?: () => void;
+  handleStay?: () => void;
+  handleDouble?: () => void;
+  handleSplit?: () => void;
 }
 
 function Hand({
+  isDealer = false,
   cards,
   handleHit,
   handleStay,
@@ -32,16 +34,17 @@ function Hand({
           <div> {card} </div>
         ))}
       </div>
-      {lost ? (
-        <h3>You lost</h3>
-      ) : (
-        <>
-          <button onClick={handleHit}>Hit</button>
-          <button onClick={handleStay}>Stay</button>
-          <button onClick={handleDouble}>Double</button>
-          <button onClick={handleSplit}>Split</button>
-        </>
-      )}
+      {!isDealer
+        && (lost ? (
+          <h3>You lost</h3>
+        ) : (
+          <>
+            <button onClick={handleHit}>Hit</button>
+            <button onClick={handleStay}>Stay</button>
+            <button onClick={handleDouble}>Double</button>
+            <button onClick={handleSplit}>Split</button>
+          </>
+        ))}
     </>
   );
 }

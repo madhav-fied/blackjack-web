@@ -4,7 +4,9 @@
 
 # TODO:
 
-1. Dealer? Can be one card only and then draw card
+1. Dealer? Can be one card only and then draw card [ WIP ]
+1. Evaluate cards for win
+
 1. Money for betting
 1. Improve directory structure
 

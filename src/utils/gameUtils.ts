@@ -61,3 +61,13 @@ export const stayActionDone = (hand: Array<string>): boolean => {
   if (hand[hand.length - 1] === 'stop') return true;
   return false;
 };
+
+export const canPlayerCanStillPlay = (hand: Array<Array<string>>): boolean => {
+  if (hand) return true;
+  return false;
+};
+
+export const canDealerCanStillPlay = (hand: Array<Array<string>>): boolean => {
+  if (hand) return true;
+  return false;
+};
