@@ -1,12 +1,12 @@
 import { isSplittable, stayActionDone } from '../utils/gameUtils';
 
-interface handAction {
+export interface handAction {
   type: 'hit' | 'stay' | 'double' | 'split' | 'reset';
   payload?: Array<string>;
   handId: number;
 }
 
-const blackjackReducer = (hands: Array<Array<string>>, action: handAction) => {
+export const blackjackReducer = (hands: Array<Array<string>>, action: handAction) => {
   if (stayActionDone(hands[action.handId]) && action.type !== 'reset') return hands;
 
   const newCards = action.payload;
@@ -46,5 +46,3 @@ const blackjackReducer = (hands: Array<Array<string>>, action: handAction) => {
       throw new Error('Yo, give proper operation');
   }
 };
-
-export default blackjackReducer;
