@@ -6,6 +6,7 @@ export interface handAction {
   handId: number;
 }
 
+// TODO: Refactor this later
 export const blackjackReducer = (hands: Array<Array<string>>, action: handAction) => {
   if (stayActionDone(hands[action.handId]) && action.type !== 'reset') return hands;
 
@@ -39,8 +40,11 @@ export const blackjackReducer = (hands: Array<Array<string>>, action: handAction
         .concat(splitHand);
       return newHands;
     }
+    // TODO: Improve reset: having two forms of reset is bad as of now.
+    // One is for dealer, one is for player. Fix type errors too.
     case 'reset': {
-      return [[...newCards]];
+      if (!newCards) throw new Error('Yo bro please pass new Cards');
+      return [newCards];
     }
     default:
       throw new Error('Yo, give proper operation');

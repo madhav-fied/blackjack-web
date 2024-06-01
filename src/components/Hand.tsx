@@ -29,14 +29,16 @@ function Hand({
 
   return (
     <>
+      <hr />
       <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
-        {cards.map((card: string) => (
+        {cards.filter((card) => card !== 'stop').map((card: string) => (
           <div> {card} </div>
         ))}
+        <div> {`>>  ${computeValue(cards).join(' / ')} `}</div>
       </div>
       {!isDealer
         && (lost ? (
-          <h3>You lost</h3>
+          <h3>Busted</h3>
         ) : (
           <>
             <button onClick={handleHit}>Hit</button>
@@ -45,6 +47,7 @@ function Hand({
             <button onClick={handleSplit}>Split</button>
           </>
         ))}
+        <hr />
     </>
   );
 }

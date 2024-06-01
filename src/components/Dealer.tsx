@@ -1,36 +1,35 @@
 import { useEffect } from 'react';
 import Hand from './Hand';
-import { canDealerCanStillPlay } from '../utils/gameUtils';
+import { canDealerStillPlay } from '../utils/gameUtils';
 import { handAction } from './blackjackReducer';
 
 interface dealerProps {
   hand: Array<Array<string>>;
   drawCard: () => Array<string>;
-  dealerTurn: boolean;
+  gameControl: 'player' | 'dealer' | 'game';
+  setGameControl: (x: 'player' | 'dealer' | 'game') => void;
   dealerHandActionDispatch: (x: handAction) => void;
 }
 
 function Dealer({
-  hand, drawCard, dealerTurn, dealerHandActionDispatch,
+  hand, drawCard, gameControl, setGameControl, dealerHandActionDispatch,
 }: dealerProps) {
   useEffect(() => {
-    if (!dealerTurn) return;
-    // console.log({dealerHand, playable: canDealerCanStillPlay(dealerHand)});
+    if (gameControl !== 'dealer') return;
+    // console.log({ hand, playable: canDealerStillPlay(hand) });
 
     // NOTE: while loop is bad to wrap a reducer action dispatch
     // state update and js are pretty weird
-    if (canDealerCanStillPlay(hand)) {
+    if (canDealerStillPlay(hand)) {
       const card = drawCard();
-      setTimeout(() => {
-        dealerHandActionDispatch({
-          type: 'hit',
-          payload: card,
-          handId: 0,
-        });
-      }, 1000);
-    }
+      dealerHandActionDispatch({
+        type: 'hit',
+        payload: card,
+        handId: 0,
+      });
+    } else setGameControl('game');
     // Check: adding drawCard() and dispatch to deps as per lint?
-  }, [dealerTurn, hand, drawCard, dealerHandActionDispatch]);
+  }, [gameControl, hand, drawCard, dealerHandActionDispatch]);
 
   return (
     <>

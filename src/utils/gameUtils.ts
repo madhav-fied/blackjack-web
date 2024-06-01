@@ -62,24 +62,33 @@ export const stayActionDone = (hand: Array<string>): boolean => {
   return false;
 };
 
-export const canPlayerCanStillPlay = (hands: Array<Array<string>>): boolean => {
-  const valueLimit = 21;
+export const checkIfBusted = (hand: Array<string>, valueLimit: number = 21) => {
+  const deckValue = computeValue(hand);
+  return Math.min(...deckValue) > valueLimit;
+};
+
+export const canPlayerStillPlay = (hands: Array<Array<string>>): boolean => {
+  // 21 leaves the player with no actions as it is a winning state
+  const valueLimit = 20;
   return hands.reduce((accumulator, hand) => {
     if (hand[hand.length - 1] === 'stop') return false;
-
-    const deckValue = computeValue(hand);
-    const isBusted = Math.min(...deckValue) > valueLimit;
+    const isBusted = checkIfBusted(hand, valueLimit);
     return accumulator || !isBusted;
   }, false);
 };
 
-export const canDealerCanStillPlay = (hands: Array<Array<string>>): boolean => {
+export const getMaxValidTotal = (hand: Array<string>): number => {
+  const valuesPossible = computeValue(hand);
+  // adding -1 to ensure we have a bust
+  return Math.max(...valuesPossible.filter((value) => value < 22), -1);
+};
+
+export const canDealerStillPlay = (hands: Array<Array<string>>): boolean => {
   // Improve this? Maybe give user the option to choose
   // dealer should hit on all 16s and stop on any 17s
-  const valueToStop = 17;
+  const valueLimit = 17;
   return hands.reduce((accumulator, hand) => {
-    const deckValue = computeValue(hand);
-    const shouldHit = Math.min(...deckValue) < valueToStop;
+    const shouldHit = !checkIfBusted(hand, valueLimit);
     return accumulator || shouldHit;
   }, false);
 };

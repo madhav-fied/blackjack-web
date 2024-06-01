@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import Hand from './Hand';
-import { canPlayerCanStillPlay } from '../utils/gameUtils';
+import { canPlayerStillPlay } from '../utils/gameUtils';
 import { handAction } from './blackjackReducer';
 
 interface playerProps {
   hand: Array<Array<string>>;
-  drawCard: () => Array<string>;
-  setDealerTurn: (x: boolean) => void;
+  drawCard: () => Array<string>
+  setGameControl: (x: 'player' | 'dealer' | 'game') => void;
   playerHandActionDispatch: (x: handAction) => void;
 }
 
 function Player({
-  hand, drawCard, setDealerTurn, playerHandActionDispatch,
+  hand, drawCard, setGameControl, playerHandActionDispatch,
 }: playerProps) {
   function handleHit(handId: number) {
     const card = drawCard();
@@ -50,9 +50,9 @@ function Player({
 
   useEffect(() => {
     // console.log({playerHand, playable: canPlayerCanStillPlay(playerHand)})
-    if (!canPlayerCanStillPlay(hand)) setDealerTurn(true);
+    if (!canPlayerStillPlay(hand)) setGameControl('dealer');
     // Check: adding setDealerTurn() to deps as per lint
-  }, [hand, setDealerTurn]);
+  }, [hand, setGameControl]);
 
   return (
     <>
