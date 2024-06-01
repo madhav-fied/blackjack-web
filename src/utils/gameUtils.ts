@@ -62,12 +62,24 @@ export const stayActionDone = (hand: Array<string>): boolean => {
   return false;
 };
 
-export const canPlayerCanStillPlay = (hand: Array<Array<string>>): boolean => {
-  if (hand) return true;
-  return false;
+export const canPlayerCanStillPlay = (hands: Array<Array<string>>): boolean => {
+  const valueLimit = 21;
+  return hands.reduce((accumulator, hand) => {
+    if (hand[hand.length - 1] === 'stop') return false;
+
+    const deckValue = computeValue(hand);
+    const isBusted = Math.min(...deckValue) > valueLimit;
+    return accumulator || !isBusted;
+  }, false);
 };
 
-export const canDealerCanStillPlay = (hand: Array<Array<string>>): boolean => {
-  if (hand) return true;
-  return false;
+export const canDealerCanStillPlay = (hands: Array<Array<string>>): boolean => {
+  // Improve this? Maybe give user the option to choose
+  // dealer should hit on all 16s and stop on any 17s
+  const valueToStop = 17;
+  return hands.reduce((accumulator, hand) => {
+    const deckValue = computeValue(hand);
+    const shouldHit = Math.min(...deckValue) < valueToStop;
+    return accumulator || shouldHit;
+  }, false);
 };

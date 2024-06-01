@@ -55,24 +55,15 @@ function Player({ dealHand, drawCard, setDealerTurn }: playerProps) {
     });
   }
 
-  // imporve this
-  function handleReset(handId: number) {
-    const cards = dealHand();
-    playerHandActionDispatch({
-      type: 'reset',
-      payload: cards,
-      handId,
-    });
-  }
-
   useEffect(() => {
+    // console.log({playerHand, playable: canPlayerCanStillPlay(playerHand)})
     if (!canPlayerCanStillPlay(playerHand)) setDealerTurn(true);
-  }, [playerHand]);
+    // Check: adding setDealerTurn() to deps as per lint
+  }, [playerHand, setDealerTurn]);
 
   return (
     <>
       <h3>Player:</h3>
-      <button onClick={() => handleReset(0)}>Reset</button>
       {playerHand.map((hand, idx) => (
         <Hand
           cards={hand}

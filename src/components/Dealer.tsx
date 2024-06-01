@@ -23,15 +23,22 @@ function Dealer({ dealHand, drawCard, dealerTurn }: dealerProps) {
 
   useEffect(() => {
     if (!dealerTurn) return;
-    while (canDealerCanStillPlay(dealerHand)) {
+    // console.log({dealerHand, playable: canDealerCanStillPlay(dealerHand)});
+
+    // NOTE: while loop is bad to wrap a reducer action dispatch
+    // state update and js are pretty weird
+    if (canDealerCanStillPlay(dealerHand)) {
       const card = drawCard();
-      dealerHandActionDispatch({
-        type: 'hit',
-        payload: card,
-        handId: 0,
-      });
+      setTimeout(() => {
+        dealerHandActionDispatch({
+          type: 'hit',
+          payload: card,
+          handId: 0,
+        });
+      }, 1000);
     }
-  }, [dealerTurn]);
+    // Check: adding drawCard() to deps as per lint?
+  }, [dealerTurn, dealerHand, drawCard]);
 
   return (
     <>

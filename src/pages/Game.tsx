@@ -29,6 +29,7 @@ function Game() {
   return (
     <>
       <h1>Money</h1>
+      <h2>isDealerTurn: {dealerTurn ? 'YES' : 'NO'}</h2>
       <Dealer
         dealHand={() => drawCard()}
         drawCard={drawCard}
