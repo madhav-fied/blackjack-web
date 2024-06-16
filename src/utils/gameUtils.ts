@@ -1,4 +1,4 @@
-import { CARDS } from '../constants/cards';
+import { CARDS, WINNING_SCORE } from '../constants/cards';
 
 export const dealRandomCard = () => CARDS[Math.floor(Math.random() * CARDS.length)];
 
@@ -52,6 +52,12 @@ export const computeValue = (cards: Array<string>): Array<number> => {
   return [hand.value];
 };
 
+export const isBlackJack = (hand: Array<string>): boolean => {
+  const maxScore = Math.max(...computeValue(hand));
+  if (maxScore === WINNING_SCORE && hand.length === 2) return true;
+  return false;
+};
+
 export const isSplittable = (hand: Array<string>): boolean => {
   if (hand.length === 2 && hand[0].split(' ')[0] === hand[1].split(' ')[0]) return true;
   return false;
@@ -71,7 +77,7 @@ export const canPlayerStillPlay = (hands: Array<Array<string>>): boolean => {
   // 21 leaves the player with no actions as it is a winning state
   const valueLimit = 20;
   return hands.reduce((accumulator, hand) => {
-    if (hand[hand.length - 1] === 'stop') return false;
+    if (hand[hand.length - 1] === 'stop' || isBlackJack(hand)) return false;
     const isBusted = checkIfBusted(hand, valueLimit);
     return accumulator || !isBusted;
   }, false);
@@ -91,4 +97,16 @@ export const canDealerStillPlay = (hands: Array<Array<string>>): boolean => {
     const shouldHit = !checkIfBusted(hand, valueLimit);
     return accumulator || shouldHit;
   }, false);
+};
+
+// eslint-disable-next-line max-len
+export const IsPlayerHandBetter = (playerCards: Array<string>, dealerCards: Array<string>): boolean => {
+  if (isBlackJack(playerCards)) return true;
+
+  const dealerValue = getMaxValidTotal(dealerCards);
+  const playerValue = getMaxValidTotal(playerCards);
+
+  if (playerValue > dealerValue) return true;
+
+  return false;
 };

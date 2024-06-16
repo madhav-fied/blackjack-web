@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { computeValue } from '../utils/gameUtils';
+import Card from './Card';
 
 interface handProps {
   cards: Array<string>;
@@ -32,7 +33,7 @@ function Hand({
       <hr />
       <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
         {cards.filter((card) => card !== 'stop').map((card: string) => (
-          <div> {card} </div>
+          <Card value={card} />
         ))}
         <div> {`>>  ${computeValue(cards).join(' / ')} `}</div>
       </div>

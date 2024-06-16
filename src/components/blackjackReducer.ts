@@ -1,4 +1,6 @@
-import { isSplittable, stayActionDone } from '../utils/gameUtils';
+import {
+  getMaxValidTotal, isSplittable, stayActionDone,
+} from '../utils/gameUtils';
 
 export interface handAction {
   type: 'hit' | 'stay' | 'double' | 'split' | 'reset';
@@ -9,6 +11,9 @@ export interface handAction {
 // TODO: Refactor this later
 export const blackjackReducer = (hands: Array<Array<string>>, action: handAction) => {
   if (stayActionDone(hands[action.handId]) && action.type !== 'reset') return hands;
+
+  // if total is 21 stop processing actions
+  if (getMaxValidTotal(hands[action.handId]) === 21) return hands;
 
   const newCards = action.payload;
 

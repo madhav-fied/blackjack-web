@@ -29,7 +29,7 @@ function Dealer({
       });
     } else setGameControl('game');
     // Check: adding drawCard() and dispatch to deps as per lint?
-  }, [gameControl, hand, drawCard, dealerHandActionDispatch]);
+  }, [gameControl, hand, drawCard, dealerHandActionDispatch, setGameControl]);
 
   return (
     <>

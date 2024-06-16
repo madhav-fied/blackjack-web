@@ -5,7 +5,7 @@ import Player from '../components/Player';
 import Dealer from '../components/Dealer';
 import { blackjackReducer } from '../components/blackjackReducer';
 import useDeck from '../hooks/useDeck';
-import { checkIfBusted, getMaxValidTotal } from '../utils/gameUtils';
+import { IsPlayerHandBetter } from '../utils/gameUtils';
 
 type agents = 'player' | 'dealer' | 'game';
 
@@ -16,7 +16,7 @@ const getHand = (fn: () => Array<string>): Array<Array<string>> => {
 
 function Game() {
   const [drawCard, dealCards] = useDeck();
-  const [winCount, seWinCount] = useState<number>(0);
+  const [winCount, setWinCount] = useState<number>(0);
   const [gameControl, setGameControl] = useState<agents>('player');
 
   const [playerHand, playerHandActionDispatch] = useReducer(
@@ -48,19 +48,18 @@ function Game() {
     });
 
     setGameControl('player');
-  }, []);
+  }, [drawCard, dealCards]);
 
   useEffect(() => {
     if (gameControl !== 'game') return;
-    // TODO: standardize this
-    const dealerValue = getMaxValidTotal(dealerHand[0]);
-    const timesPlayerWon = playerHand.reduce((accumulator, cards) => {
-      if (checkIfBusted(cards)) return accumulator;
-      const maxTotal = getMaxValidTotal(cards);
-      return accumulator + ((maxTotal > dealerValue) ? 1 : 0);
+    const dealerCards = dealerHand[0];
+    const timesPlayerWon = playerHand.reduce((accumulator, hand) => {
+      if (IsPlayerHandBetter(hand, dealerCards)) return accumulator + 1;
+      return accumulator;
     }, 0);
-    seWinCount((prev) => prev + timesPlayerWon);
-  }, [gameControl]);
+
+    setWinCount((pre) => pre + timesPlayerWon);
+  }, [gameControl, playerHand, dealerHand]);
 
   return (
     <>
