@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    'eslint:recommended',
+    'airbnb-base',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
@@ -14,5 +14,17 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'import/extensions': [
+      'error',
+      {
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    'import/no-unresolved': 'off',
+    // https://github.com/import-js/eslint-plugin-import/issues/422
+    // vite and vite plugin react will be mostly used when building
+    // its fine to have them inside dev-dependency
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
-}
+};
